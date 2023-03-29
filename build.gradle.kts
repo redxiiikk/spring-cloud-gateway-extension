@@ -50,19 +50,23 @@ publishing {
 
     publications {
         create<MavenPublication>("mavenJava") {
-            from(components["java"])
             groupId = "$group"
             artifactId = rootProject.name
             version = "${project.version}"
 
+            from(components["kotlin"])
+            afterEvaluate {
+                artifact(sourcesJar.get())
+            }
+
             pom {
                 name.set(rootProject.name)
-                description.set("A library for doing cool stuff")
+                description.set("Spring cloud gateway extension")
                 url.set("https://github.com/redxiiikk/spring-cloud-gateway-extension")
                 licenses {
                     license {
                         name.set("MIT")
-                        url.set("https://www.mit.edu/~amini/LICENSE.md")
+                        url.set("https://opensource.org/license/mit/")
                     }
                 }
                 developers {
@@ -77,6 +81,12 @@ publishing {
                         name.set("redxiiikkTW")
                         url.set("https://github.com/redxiiikkTW")
                     }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/redxiiikk/spring-cloud-gateway-extension.git")
+                    developerConnection.set("scm:git:ssh://github.com/redxiiikk/spring-cloud-gateway-extension.git")
+                    url.set("https://github.com/redxiiikk/spring-cloud-gateway-extension")
                 }
             }
         }
@@ -94,4 +104,9 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val sourcesJar = tasks.register<Jar>("sourcesJar") {
+    from(sourceSets["main"].allJava)
+    archiveClassifier.set("sources")
 }
