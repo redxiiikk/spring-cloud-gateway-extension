@@ -19,11 +19,13 @@ import kotlin.annotation.AnnotationTarget.CLASS
 @Target(CLASS)
 @Retention(RUNTIME)
 @Import(LoadBalancerIsolationConfiguration::class)
+@Suppress("unused")
 annotation class EnableLoadBalancerIsolation
 
 @Configuration
 @EnableConfigurationProperties
 @LoadBalancerClients(defaultConfiguration = [LoadBalancerConfig::class])
+@Suppress("SpringFacetCodeInspection")
 open class LoadBalancerIsolationConfiguration {
     @Bean
     open fun isolationConfig() = LoadbalancerIsolationConfigProperty()
