@@ -5,6 +5,7 @@ import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.Loadbala
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient
+import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplierBuilder
@@ -25,6 +26,7 @@ annotation class EnableLoadBalancerIsolation
 @Configuration
 @EnableConfigurationProperties
 @LoadBalancerClients(defaultConfiguration = [LoadBalancerConfig::class])
+@ConditionalOnBean(ReactiveLoadBalancerClientFilter::class)
 @Suppress("SpringFacetCodeInspection")
 open class LoadBalancerIsolationConfiguration {
     @Bean
