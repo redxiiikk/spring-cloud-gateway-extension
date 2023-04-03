@@ -16,10 +16,3 @@ jobs:
           java-version: '17'
       - name: Check with Gradle
         run: ./gradlew check
-      - name: Build with Gradle
-        run: ./gradlew build
-      - name: Publish to Github Packages
-        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
-        env:
-          PUBLISH_GITHUB_GITHUB_USERNAME: ${{ secrets.USERNAME }}
-          PUBLISH_GITHUB_GITHUB_TOKEN: ${{ secrets.TOKEN }}

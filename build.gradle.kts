@@ -44,15 +44,6 @@ dependencies {
 publishing {
     repositories {
         mavenLocal()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/redxiiikk/spring-cloud-gateway-extension")
-            credentials {
-                // Github Packages 认证信息
-                username = System.getenv("PUBLISH_GITHUB_USERNAME") ?: ""
-                password = System.getenv("PUBLISH_GITHUB_TOKEN") ?: ""
-            }
-        }
     }
 
     publications {
