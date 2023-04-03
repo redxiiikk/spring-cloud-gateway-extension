@@ -32,6 +32,11 @@ annotation class EnableLoadBalancerIsolation
 @EnableConfigurationProperties
 @LoadBalancerClients(defaultConfiguration = [LoadBalancerConfig::class])
 @ConditionalOnBean(ReactiveLoadBalancerClientFilter::class)
+@ConditionalOnProperty(
+    name = ["spring.cloud.gateway.loadbalancer.isolation.enable"],
+    havingValue = "true",
+    matchIfMissing = true
+)
 @Suppress("SpringFacetCodeInspection")
 open class LoadBalancerIsolationConfiguration {
     @Bean
