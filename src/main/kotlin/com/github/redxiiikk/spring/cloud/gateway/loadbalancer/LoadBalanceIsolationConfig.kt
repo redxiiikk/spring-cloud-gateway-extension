@@ -1,8 +1,13 @@
 package com.github.redxiiikk.spring.cloud.gateway.loadbalancer
 
+import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadBalancerIsolationHeaderGeneratorFilter
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadbalancerIsolationConfigProperty
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadbalancerIsolationServiceInstanceListSupplier
+import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.generator.EmptyLoadBalancerIsolationHeaderValueGenerator
+import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.generator.LoadBalancerIsolationHeaderValueGenerator
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient
 import org.springframework.cloud.gateway.filter.ReactiveLoadBalancerClientFilter
@@ -31,6 +36,17 @@ annotation class EnableLoadBalancerIsolation
 open class LoadBalancerIsolationConfiguration {
     @Bean
     open fun isolationConfig() = LoadbalancerIsolationConfigProperty()
+
+    @Bean
+    open fun isolationHeaderGeneratorFilter(
+        property: LoadbalancerIsolationConfigProperty,
+        generator: LoadBalancerIsolationHeaderValueGenerator
+    ) = LoadBalancerIsolationHeaderGeneratorFilter(property, generator)
+
+    @Bean
+    @ConditionalOnMissingBean(LoadBalancerIsolationHeaderValueGenerator::class)
+    open fun loadBalancerIsolationHeaderValueGenerator() =
+        EmptyLoadBalancerIsolationHeaderValueGenerator()
 }
 
 open class LoadBalancerConfig {
