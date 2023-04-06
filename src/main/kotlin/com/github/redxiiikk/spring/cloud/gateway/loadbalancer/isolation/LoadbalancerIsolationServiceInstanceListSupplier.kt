@@ -14,7 +14,7 @@ class LoadbalancerIsolationServiceInstanceListSupplier(
 
     override fun get(): Flux<MutableList<ServiceInstance>> {
         return if (property.enable) {
-            return delegate.get().map { selectServiceInstancesByHint(it, property.baselineEnvName) }
+            delegate.get().map { selectServiceInstancesByEnvName(it, property.baselineEnvName) }
         } else {
             delegate.get()
         }
@@ -30,26 +30,24 @@ class LoadbalancerIsolationServiceInstanceListSupplier(
 
 
     private fun filterByIsolation(
-        request: Request<*>,
-        instances: MutableList<ServiceInstance>
+        request: Request<*>, instances: MutableList<ServiceInstance>
     ): MutableList<ServiceInstance> {
-        val env: String = when (val context = request.context) {
-            is RequestDataContext -> {
+        val envName: String = when (val context = request.context) {
+            is RequestDataContext ->
                 context.clientRequest.headers.getFirst(property.isolationHeaderKey) ?: property.baselineEnvName
-            }
 
-            else -> return selectServiceInstancesByHint(instances, property.baselineEnvName)
+            else -> property.baselineEnvName
         }
 
-        return selectServiceInstancesByHint(instances, env).ifEmpty {
-            selectServiceInstancesByHint(instances, property.baselineEnvName)
+
+        return selectServiceInstancesByEnvName(instances, envName).ifEmpty {
+            selectServiceInstancesByEnvName(instances, property.baselineEnvName)
         }
     }
 
-    private fun selectServiceInstancesByHint(
-        instances: MutableList<ServiceInstance>,
-        hint: String
+    private fun selectServiceInstancesByEnvName(
+        instances: MutableList<ServiceInstance>, envName: String
     ): MutableList<ServiceInstance> {
-        return instances.filter { hint == it.metadata[property.isolationMetadataKey] }.toMutableList()
+        return instances.filter { envName == it.metadata[property.isolationMetadataKey] }.toMutableList()
     }
 }
