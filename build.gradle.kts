@@ -39,6 +39,7 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 publishing {
@@ -52,10 +53,7 @@ publishing {
             artifactId = rootProject.name
             version = "${project.version}"
 
-            from(components["kotlin"])
-            afterEvaluate {
-                artifact(sourcesJar.get())
-            }
+            from(components["java"])
 
             pom {
                 name.set(rootProject.name)
@@ -104,7 +102,16 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val sourcesJar = tasks.register<Jar>("sourcesJar") {
-    from(sourceSets["main"].allJava)
-    archiveClassifier.set("sources")
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }
