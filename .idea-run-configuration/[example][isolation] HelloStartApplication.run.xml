@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="[example][isolation] HelloStartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="spring-gateway-isolation-example.hello-service.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.github.redxiiikk.learn.gatewayDispatch.StartApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
