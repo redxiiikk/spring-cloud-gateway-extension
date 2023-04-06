@@ -4,7 +4,8 @@ group = "com.github.redxiiikk.learn"
 version = "1.0-SNAPSHOT"
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.20"
+    id("org.springframework.boot") version "3.0.2"
 }
 
 allprojects {

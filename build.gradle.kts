@@ -4,7 +4,7 @@ plugins {
     id("java-library")
     id("maven-publish")
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.20"
 }
 
 group = "com.github.redxiiikk.spring.cloud"
@@ -39,7 +39,6 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 publishing {
