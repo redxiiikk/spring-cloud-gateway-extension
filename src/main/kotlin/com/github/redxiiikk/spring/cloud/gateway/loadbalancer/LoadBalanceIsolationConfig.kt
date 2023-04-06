@@ -5,6 +5,7 @@ import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.Loadbala
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadbalancerIsolationServiceInstanceListSupplier
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.generator.EmptyLoadBalancerIsolationHeaderValueGenerator
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.generator.LoadBalancerIsolationHeaderValueGenerator
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -33,14 +34,26 @@ annotation class EnableLoadBalancerIsolation
 @LoadBalancerClients(defaultConfiguration = [LoadBalancerConfig::class])
 @ConditionalOnBean(ReactiveLoadBalancerClientFilter::class)
 @ConditionalOnProperty(
-    name = ["spring.cloud.gateway.loadbalancer.isolation.enable"],
+    prefix = "spring.cloud.gateway.loadbalancer.isolation",
+    name = ["enable"],
     havingValue = "true",
     matchIfMissing = true
 )
 @Suppress("SpringFacetCodeInspection")
 open class LoadBalancerIsolationConfiguration {
+    companion object {
+        private val logger = LoggerFactory.getLogger(LoadBalancerIsolationConfiguration::class.java)
+    }
+
+    init {
+        logger.info("start config loadbalancer isolation")
+    }
+
     @Bean
-    open fun isolationConfig() = LoadbalancerIsolationConfigProperty()
+    open fun isolationConfig(): LoadbalancerIsolationConfigProperty {
+        logger.info("start create LoadbalancerIsolationConfigProperty Bean")
+        return LoadbalancerIsolationConfigProperty()
+    }
 
     @Bean
     open fun isolationHeaderGeneratorFilter(
