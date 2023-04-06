@@ -22,14 +22,17 @@ class LoadBalancerIsolationHeaderGeneratorFilter(
         private val logger = LoggerFactory.getLogger(LoadBalancerIsolationHeaderGeneratorFilter::class.java)
     }
 
-
     /**
      * This filter must precede the loadBalancerFilter.
      */
     override fun getOrder(): Int = ReactiveLoadBalancerClientFilter.LOAD_BALANCER_CLIENT_FILTER_ORDER - 1
 
     override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-        return chain.filter(doIsolationHeaderValueGenerate(exchange))
+        return if (property.enable) {
+            chain.filter(doIsolationHeaderValueGenerate(exchange))
+        } else {
+            chain.filter(exchange)
+        }
     }
 
     private fun doIsolationHeaderValueGenerate(exchange: ServerWebExchange): ServerWebExchange {

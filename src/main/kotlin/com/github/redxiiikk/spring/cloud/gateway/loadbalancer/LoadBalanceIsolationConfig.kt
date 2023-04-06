@@ -6,10 +6,8 @@ import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadBala
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadbalancerIsolationConfigProperty
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.LoadbalancerIsolationServiceInstanceListSupplier
 import com.github.redxiiikk.spring.cloud.gateway.loadbalancer.isolation.generator.LoadBalancerIsolationHeaderValueGenerator
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.client.discovery.ReactiveDiscoveryClient
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients
@@ -28,19 +26,9 @@ import kotlin.annotation.AnnotationTarget.CLASS
 annotation class EnableLoadBalancerIsolation
 
 
-@ConditionalOnProperty(
-    prefix = "spring.cloud.gateway.loadbalancer.isolation",
-    name = ["enable"],
-    havingValue = "true",
-    matchIfMissing = true
-)
 @EnableConfigurationProperties
 @LoadBalancerClients(defaultConfiguration = [LoadBalancerConfig::class])
 open class LoadBalancerIsolationConfiguration {
-    companion object {
-        private val logger = LoggerFactory.getLogger(LoadBalancerIsolationConfiguration::class.java)
-    }
-
     @Bean
     open fun isolationConfig(): LoadbalancerIsolationConfigProperty = LoadbalancerIsolationConfigProperty()
 
